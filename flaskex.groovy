@@ -9,33 +9,23 @@ node {
         stage("Initialize") {
             sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install epel-release -y "
         }
-        
         stage("Install git") {
             sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install git -y"
-            
         }
-        
-        stage("Install python devel") {
-            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install python36-devel -y"
-            
+        stage("Install pip 3.6") {
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } rm -rf Flaskex*"
         }
-        stage("Install python devel") {
-            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install python36-setuptools -y"
-            
+        stage("Download git repo") {
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } git clone https://github.com/anfederico/Flaskex && ls"
         }
-        stage("Install python devel") {
-            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } easy_install-3.6 pip"
-            
+        stage("Install python3") {
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install python3 python3-pip3 -y"
         }
-        stage("Install git") {
-            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } 'rm -rf Flaskex && git clone -q https://github.com/anfederico/Flaskex'"
+        stage("Install requirements") {
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } pip3 install -r Flaskex/requirements.txt"
         }
-        stage("Install git") {
-            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } pip install --user -r Flaskex/requirements.txt"
-        }
-        stage("Install git") {
+        stage("Install app.py") {
             sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } 'python3 Flaskex/app.py &'"
         }
-    }   
-    
+    }
 }
