@@ -16,11 +16,11 @@ node {
         }
         
         stage("Install python devel") {
-            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install python36-devel"
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install python36-devel -y"
             
         }
         stage("Install python devel") {
-            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install python36-setuptools"
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install python36-setuptools -y"
             
         }
         stage("Install python devel") {
