@@ -12,7 +12,7 @@ node {
         stage("Install git") {
             sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install git -y"
         }
-        stage("Install pip 3.6") {
+        stage("Remove files") {
             sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } rm -rf Flaskex*"
         }
         stage("Download git repo") {
