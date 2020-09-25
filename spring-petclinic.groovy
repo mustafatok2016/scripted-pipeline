@@ -16,5 +16,20 @@ node {
         stage("Install git") {
             sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } yum install git -y"
         }
+        stage("Removing repo") {
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } rm -rf spring-petclinic*"
+        }
+        stage("Download repo") {
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } git clone https://github.com/spring-projects/spring-petclinic.git"
+        }
+        stage("Install Maven") {
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } 'cd spring-petclinic/ && ./mvnw package'"
+        }
+        stage("Install Maven") {
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } 'cd spring-petclinic/ && mv target/*.jar target/app.jar'"
+        }
+        stage("Install git") {
+            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${ params.SSHNODE } java -jar spring-petclinic/target/app.jar"
+        }
     }
 }
