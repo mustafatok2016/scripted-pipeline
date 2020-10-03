@@ -6,7 +6,7 @@ properties([
     
 node{
     stage("Pulling GitHub YML Files"){
-        git url: 'https://github.com/mustafatok2016/Ansible-Spring-Petclinic.git'
+        git url: 'https://github.com/tokmustafa/Ansible-Spring-Petclinic.git'
     }
     stage("Installing Prerequisites"){
         ansiblePlaybook become: true, colorized: true, credentialsId: 'jenkins-master', disableHostKeyChecking: true, inventory: "${params.node},", playbook: 'prerequisites.yml'
